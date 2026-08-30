@@ -8,7 +8,23 @@ Its central rule is simple:
 
 > **The message belongs to Velvet. The carrier is replaceable.**
 
-A V2V envelope may travel over local Ethernet, Wi-Fi, Tailscale, direct LoRa, Meshtastic, a private LoRaWAN/ChirpStack deployment, serial, cellular, or another approved carrier. Changing the carrier must not silently change peer identity, trust, message meaning, or execution authority.
+A V2V envelope may travel over local Ethernet, Wi-Fi, Tailscale, direct LoRa, Meshtastic, a private LoRaWAN/ChirpStack deployment, serial, cellular, or another approved carrier. Changing the carrier must not silently change peer identity, trust, message meaning, execution authority, or disclosure scope.
+
+## Privacy posture
+
+Velvet's ability to use many carriers does **not** mean Velvet is always transmitting owner information.
+
+> **Connectivity is a capability, not consent.**
+
+Normal operation is private/local by default. A reachable cellular, Internet, Home, phone, mesh, or radio path does not authorize continuous location upload, owner tracking, cabin telemetry, medical-state export, route-history export, or background cloud reporting.
+
+External transmission should happen because an enabled capability has a defined purpose, destination, disclosure class, lifetime, and policy basis.
+
+A confirmed emergency may justify a narrowly scoped disclosure that would not be appropriate during ordinary operation. That exception is incident-scoped and should end at stand-down. It must not silently become permanent monitoring or a new standing telemetry relationship.
+
+Beacon of Hope and Owner Emergency Bridge exist to provide **more ways to reach help, not more ways to track the owner**.
+
+See [`docs/PRIVACY_AND_DISCLOSURE_DOCTRINE.md`](docs/PRIVACY_AND_DISCLOSURE_DOCTRINE.md).
 
 ## What this repository owns
 
