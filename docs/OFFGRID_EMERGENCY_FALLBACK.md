@@ -1,4 +1,10 @@
-# Off-Grid Emergency Fallback
+# Beacon of Hope
+
+## Canonical name
+
+**Beacon of Hope** is the human-facing name for Velvet's off-grid emergency fallback path.
+
+The stable wire contract remains `velvet.emergency.beacon.v1`; naming the capability does not change the protocol schema, routing destination, authority model, or interoperability rules.
 
 ## Purpose
 
@@ -22,13 +28,13 @@ For an active incident, higher layers should normally prefer:
 2. protected local/trusted IP;
 3. known trusted V2V peers or gateways;
 4. protected constrained radio paths;
-5. explicitly enabled public emergency beacon fallback.
+5. explicitly enabled public Beacon of Hope fallback.
 
 Deployment policy may attempt more than one eligible route when an incident justifies redundancy, but each route remains separately bounded and receipted.
 
 ## Public emergency beacon exception
 
-Normal Communications traffic requires a protected path by default. The public emergency exception is deliberately narrower.
+Normal Communications traffic requires a protected path by default. The public Beacon of Hope exception is deliberately narrower.
 
 An unprotected constrained carrier may be considered only when all of the following are true:
 
@@ -54,7 +60,7 @@ Names, detailed medical history, medications, credentials, general memory, raw c
 
 ## Relay behavior
 
-A compatible Velvet peer may receive a public beacon and, if its own policy permits, relay it through a healthier carrier. Relay does not make the sender trusted and does not authorize any action on the receiving body.
+A compatible Velvet peer may receive a Beacon of Hope and, if its own policy permits, relay it through a healthier carrier. Relay does not make the sender trusted and does not authorize any action on the receiving body.
 
 A relay should preserve the original incident/message identity, bounded TTL, and provenance, and should emit its own delivery evidence. Relays must not silently enlarge the payload, retention, authority, or disclosure scope.
 
@@ -68,7 +74,7 @@ Only the last category can support a claim that an upstream configured destinati
 
 ## Cancellation and expiry
 
-Emergency beacons must expire quickly. Stand-down, incident cancellation, a successful authoritative emergency contact, or policy change should stop new fallback attempts where safe to do so.
+Beacon of Hope transmissions must expire quickly. Stand-down, incident cancellation, a successful authoritative emergency contact, or policy change should stop new fallback attempts where safe to do so.
 
 Radio retries remain adapter/deployment policy because legal airtime and duty-cycle limits vary by region and carrier. Shared Communications code must not hard-code a worldwide frequency, transmit power, cadence, spreading factor, or channel.
 
