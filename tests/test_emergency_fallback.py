@@ -1,6 +1,7 @@
 import pytest
 
 from velvet_communications import (
+    BEACON_OF_HOPE_NAME,
     EMERGENCY_BEACON_PAYLOAD_TYPE,
     EMERGENCY_BROADCAST_DESTINATION,
     EmergencyFallbackPolicy,
@@ -42,6 +43,10 @@ def offer(name, kind, preference, **overrides):
     }
     values.update(overrides)
     return TransportOffer(**values)
+
+
+def test_canonical_human_name_is_stable():
+    assert BEACON_OF_HOPE_NAME == "Beacon of Hope"
 
 
 def test_protected_route_is_preferred_over_open_radio():
