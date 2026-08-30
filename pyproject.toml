@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "velvet-communications"
-version = "0.1.0"
-description = "Truth-bound communication preparation for the Velvet ecosystem"
+version = "0.2.0"
+description = "Transport-neutral V2V communications and degraded-link routing for the Velvet ecosystem"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { file = "LICENSE" }

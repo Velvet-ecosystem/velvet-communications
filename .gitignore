@@ -7,17 +7,18 @@ build/
 dist/
 *.egg-info/
 
-# Local/generated communication material
-drafts/
-exports/
-media/
-private/
+# Local/generated communications state
+spool/
+queues/
+peer-state/
+transport-state/
 runtime-data/
+captures/
 *.jsonl
 *.db
 *.sqlite
 
-# Secrets and local configuration
+# Secrets and deployment-local configuration
 .env
 .env.*
 !.env.example
@@ -26,4 +27,7 @@ runtime-data/
 *.p12
 *.pfx
 *.token
+*.cert
 secrets/
+local/
+deployment/
