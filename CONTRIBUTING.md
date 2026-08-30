@@ -1,15 +1,19 @@
 # Contributing
 
-Velvet Communications is intentionally narrow: it turns verified, provenance-bound facts into communication drafts for human review.
+Velvet Communications is the shared transport-neutral layer for Velvet-to-Velvet and cross-node communication.
 
-Contributions should preserve these boundaries:
+Contributions must preserve these boundaries:
 
-- evidence remains owned by its source system;
-- uncertain or inferred claims must not be silently promoted to verified facts;
-- draft generation must remain deterministic or clearly bounded where generation is later introduced;
-- drafts never grant publication authority;
-- owner review remains explicit;
-- external publishing, account access, credentials, and network actions require separate approved executor paths;
-- no Runtime, Court, Receipts, Continuity, identity, sensor, actuator, or physical-control ownership moves into this repository.
+- Event Protocol owns event/message meaning inside a governed body;
+- Runtime and Court own coordination and authority;
+- Riven/Continuity owns identity lineage;
+- Receipts owns canonical evidence;
+- Home, vehicle, cyberdeck, and other bodies may host adapters but do not fork the shared Communications contracts;
+- transport discovery never implies trust or membership;
+- transport fallback never expands authority;
+- relays and gateways do not inherit message authority;
+- communications replay suppression does not replace Runtime consequential-action replay protection.
 
-Please include tests for contract or compiler behavior changes. Public examples must use synthetic data and non-sensitive references.
+Transport adapters should expose carrier capabilities behind the common interface rather than leak Meshtastic-, LoRaWAN-, modem-, socket-, or radio-specific objects into higher Velvet logic.
+
+New carrier integrations should include tests for payload limits, unavailable/degraded paths, duplicate handling, bounded retries or queue behavior, and safe failure. Public examples must use synthetic peer identities, addresses, keys, and traffic.
