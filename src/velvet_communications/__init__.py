@@ -10,6 +10,7 @@ from .contracts import (
     V2VEnvelope,
 )
 from .emergency import (
+    BEACON_OF_HOPE_NAME,
     EMERGENCY_BEACON_PAYLOAD_TYPE,
     EMERGENCY_BROADCAST_DESTINATION,
     MAX_PUBLIC_EMERGENCY_HOPS,
@@ -23,6 +24,7 @@ from .replay import ReplayGuard
 from .routing import NoEligibleTransport, TransportSelector
 
 __all__ = [
+    "BEACON_OF_HOPE_NAME",
     "DeliveryPlan",
     "DeliveryReport",
     "EMERGENCY_BEACON_PAYLOAD_TYPE",
