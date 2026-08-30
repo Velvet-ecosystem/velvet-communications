@@ -1,11 +1,28 @@
-"""Velvet Communications: provenance-bound draft preparation."""
+"""Velvet Communications: transport-neutral V2V messaging."""
 
-from .compiler import CommunicationCompiler
-from .contracts import CommunicationFact, DraftPackage, EvidenceReference
+from .adapters import TransportAdapter
+from .contracts import (
+    DeliveryPlan,
+    DeliveryReport,
+    Priority,
+    TransportKind,
+    TransportOffer,
+    V2VEnvelope,
+)
+from .queueing import StoreAndForwardQueue
+from .replay import ReplayGuard
+from .routing import NoEligibleTransport, TransportSelector
 
 __all__ = [
-    "CommunicationCompiler",
-    "CommunicationFact",
-    "DraftPackage",
-    "EvidenceReference",
+    "DeliveryPlan",
+    "DeliveryReport",
+    "NoEligibleTransport",
+    "Priority",
+    "ReplayGuard",
+    "StoreAndForwardQueue",
+    "TransportAdapter",
+    "TransportKind",
+    "TransportOffer",
+    "TransportSelector",
+    "V2VEnvelope",
 ]
