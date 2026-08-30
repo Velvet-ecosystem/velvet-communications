@@ -1,4 +1,4 @@
-"""Bounded emergency fallback routing for degraded/off-grid incidents.
+"""Beacon of Hope: bounded emergency fallback routing for degraded/off-grid incidents.
 
 This module does not define medical semantics or authorize any action. It only
 constrains when a deliberately public emergency beacon may fall back to an
@@ -12,6 +12,7 @@ from .contracts import DeliveryPlan, Priority, TransportKind, TransportOffer, V2
 from .routing import NoEligibleTransport, TransportSelector
 
 
+BEACON_OF_HOPE_NAME = "Beacon of Hope"
 EMERGENCY_BEACON_PAYLOAD_TYPE = "velvet.emergency.beacon.v1"
 EMERGENCY_BROADCAST_DESTINATION = "broadcast.emergency"
 MAX_PUBLIC_EMERGENCY_PAYLOAD_BYTES = 384
@@ -30,7 +31,7 @@ class InvalidEmergencyBeacon(ValueError):
 
 
 class EmergencyFallbackPolicy:
-    """Select a best-effort emergency carrier without weakening normal policy.
+    """Select a best-effort Beacon of Hope carrier without weakening normal policy.
 
     Protected transports are always attempted first. An unprotected radio path
     is considered only when ``allow_unprotected_broadcast`` is explicitly true
