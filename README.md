@@ -142,7 +142,11 @@ Likewise, a vehicle, cyberdeck, mobile companion, SBC, reused laptop, or future 
 
 ## Status
 
-Private development repository while the V2V communications foundation is corrected, tested, and aligned with the existing Home/Event Protocol boundaries.
+Public-release candidate and alpha communications foundation. The transport-neutral contracts, degraded-link policy, privacy boundaries, emergency fallback semantics, and V2V authority separation are implemented and testable.
+
+Concrete radio/network adapters and physical carrier validation remain future work. This repository does not claim a production radio daemon, universal carrier support, or physical-control authority.
+
+See [`docs/PUBLIC_RELEASE_READINESS.md`](docs/PUBLIC_RELEASE_READINESS.md) for the release boundary and final pre-public checks.
 
 ## License
 
