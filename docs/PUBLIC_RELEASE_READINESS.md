@@ -1,10 +1,8 @@
-# Public Release Readiness
+# Public Release Readiness and Record
 
-Velvet Communications is intended to be publishable as a transport-neutral alpha foundation without pretending that every physical carrier has already been implemented or validated.
+Velvet Communications is published as a transport-neutral alpha foundation without pretending that every physical carrier has already been implemented or validated.
 
 ## Public release boundary
-
-The repository is suitable for public review when the final hygiene checks below are complete.
 
 The public foundation includes:
 
@@ -46,9 +44,9 @@ See:
 - `SECURITY.md`
 - `docs/PRIVACY_AND_DISCLOSURE_DOCTRINE.md`
 
-## Final pre-public checks
+## Release verification
 
-Completed in the current foundation:
+Completed:
 
 - [x] V2V/transport mission corrected and documented
 - [x] Event Protocol, Runtime/Court, Receipts, Riven, Home, and physical-control ownership boundaries documented
@@ -60,18 +58,20 @@ Completed in the current foundation:
 - [x] emergency fallback semantics distinguish send, heard/relay, and upstream acknowledgement truth
 - [x] future Owner Emergency Bridge is tracked as roadmap work rather than represented as implemented
 - [x] current release posture makes physical-carrier limitations explicit
+- [x] obsolete merged development branches removed before release
+- [x] fresh full-history TruffleHog scan run against release-prepped `main`
+- [x] scan result: 0 verified secrets and 0 unverified secrets
+- [x] repository visibility changed to public
+- [x] public README and release-facing repository content verified
 
-Manual release gates before changing repository visibility:
+Post-release housekeeping:
 
-- [ ] run a fresh **full-history** secret scan against the final `main` after all release-prep changes
-- [ ] confirm zero verified and zero unresolved/unverified findings, or investigate every finding before release
-- [ ] remove obsolete merged development branches that are no longer needed
-- [ ] verify `main` protection/ruleset posture matches the intended public repository standard
-- [ ] confirm no deployment credentials, private captures, queue/spool state, private peer records, or sensitive topology are present
-- [ ] change repository visibility to public
-- [ ] verify README, issue tracker, license, security guidance, and package links from the public view
+- [ ] remove the temporary `security/final-public-history-scan-20260831` branch after preserving the scan result in PR #11
+- [ ] apply/verify the intended `main` protection posture for this public repository
 
-A code-search result is **not** a substitute for the full-history secret scan.
+The final scan used TruffleHog 3.97.1 with full Git history (`fetch-depth: 0`), `--results=verified,unknown`, and `--fail`. It scanned 63 chunks / 115,509 bytes and reported 0 verified secrets and 0 unverified secrets.
+
+A code-search result was not used as a substitute for the full-history secret scan.
 
 ## Open roadmap is allowed
 
