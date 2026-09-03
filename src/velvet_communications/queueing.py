@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from collections import deque
 from dataclasses import dataclass
+from typing import Deque, Optional
 
 from .contracts import V2VEnvelope
 
@@ -19,7 +20,7 @@ class StoreAndForwardQueue:
             raise ValueError("queue limits must be positive")
         self.capacity = capacity
         self.max_payload_bytes = max_payload_bytes
-        self._items: deque[QueuedEnvelope] = deque()
+        self._items: Deque[QueuedEnvelope] = deque()
 
     def enqueue(self, envelope: V2VEnvelope, now_ms: int) -> None:
         self.prune(now_ms)
@@ -38,7 +39,7 @@ class StoreAndForwardQueue:
         )
         return before - len(self._items)
 
-    def pop_next(self, now_ms: int) -> V2VEnvelope | None:
+    def pop_next(self, now_ms: int) -> Optional[V2VEnvelope]:
         self.prune(now_ms)
         if not self._items:
             return None
