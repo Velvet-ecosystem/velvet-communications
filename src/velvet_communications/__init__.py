@@ -19,11 +19,20 @@ from .emergency import (
     EmergencyFallbackPolicy,
     InvalidEmergencyBeacon,
 )
+from .local_ip import (
+    AuthenticatedLocalIpAdapter,
+    AuthenticatedLocalIpServer,
+    LocalIpPeer,
+    LocalIpTransportError,
+    load_secret_file,
+)
 from .queueing import StoreAndForwardQueue
 from .replay import ReplayGuard
 from .routing import NoEligibleTransport, TransportSelector
 
 __all__ = [
+    "AuthenticatedLocalIpAdapter",
+    "AuthenticatedLocalIpServer",
     "BEACON_OF_HOPE_NAME",
     "DeliveryPlan",
     "DeliveryReport",
@@ -31,6 +40,8 @@ __all__ = [
     "EMERGENCY_BROADCAST_DESTINATION",
     "EmergencyFallbackPolicy",
     "InvalidEmergencyBeacon",
+    "LocalIpPeer",
+    "LocalIpTransportError",
     "MAX_PUBLIC_EMERGENCY_HOPS",
     "MAX_PUBLIC_EMERGENCY_PAYLOAD_BYTES",
     "MAX_PUBLIC_EMERGENCY_TTL_MS",
@@ -43,4 +54,5 @@ __all__ = [
     "TransportOffer",
     "TransportSelector",
     "V2VEnvelope",
+    "load_secret_file",
 ]
