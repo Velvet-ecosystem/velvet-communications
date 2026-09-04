@@ -87,8 +87,9 @@ def test_duplicate_message_reuses_original_accepted_outcome_without_redelivery()
     thread.start()
     try:
         adapter = adapter_for(server)
-        first = adapter.send(envelope("repeat-1"))
-        second = adapter.send(envelope("repeat-1"))
+        retry = envelope("repeat-1")
+        first = adapter.send(retry)
+        second = adapter.send(retry)
     finally:
         thread.join(timeout=2.0)
         server.close()
@@ -107,8 +108,9 @@ def test_duplicate_message_reuses_original_rejection():
     thread.start()
     try:
         adapter = adapter_for(server)
-        first = adapter.send(envelope("reject-1"))
-        second = adapter.send(envelope("reject-1"))
+        retry = envelope("reject-1")
+        first = adapter.send(retry)
+        second = adapter.send(retry)
     finally:
         thread.join(timeout=2.0)
         server.close()
