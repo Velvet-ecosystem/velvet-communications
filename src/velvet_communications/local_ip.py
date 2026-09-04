@@ -14,18 +14,17 @@ import base64
 import hashlib
 import hmac
 import json
-import os
 import socket
 import stat
 import struct
 import time
 import uuid
+from collections import OrderedDict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Dict, Mapping, Optional, Tuple, Union
 
 from .contracts import DeliveryReport, Priority, TransportKind, TransportOffer, V2VEnvelope
-from .replay import ReplayGuard
 
 LOCAL_IP_SCHEMA = "velvet.communications.local_ip.v1"
 DEFAULT_MAX_FRAME_BYTES = 256 * 1024
@@ -53,8 +52,8 @@ class LocalIpPeer:
             raise ValueError("host must be non-empty text")
         if isinstance(self.port, bool) or not isinstance(self.port, int):
             raise ValueError("port must be an integer")
-        if not 0 <= self.port <= 65535:
-            raise ValueError("port must be between 0 and 65535")
+        if not 1 <= self.port <= 65535:
+            raise ValueError("remote port must be between 1 and 65535")
 
 
 class AuthenticatedLocalIpAdapter:
@@ -186,6 +185,10 @@ class AuthenticatedLocalIpServer:
             raise ValueError("max_clock_skew_ms must be an integer")
         if max_clock_skew_ms < 1:
             raise ValueError("max_clock_skew_ms must be positive")
+        if isinstance(replay_capacity, bool) or not isinstance(replay_capacity, int):
+            raise ValueError("replay_capacity must be an integer")
+        if replay_capacity < 1:
+            raise ValueError("replay_capacity must be positive")
         self.peer_secrets = normalized
         self.receiver = receiver
         self.bind_host = bind_host.strip()
@@ -193,10 +196,11 @@ class AuthenticatedLocalIpServer:
         self.max_frame_bytes = _frame_limit(max_frame_bytes)
         self.max_payload_bytes = _payload_limit(max_payload_bytes, self.max_frame_bytes)
         self.max_clock_skew_ms = max_clock_skew_ms
+        self.replay_capacity = replay_capacity
         self.accept_timeout_seconds = _positive_number(
             "accept_timeout_seconds", accept_timeout_seconds
         )
-        self.replay_guard = ReplayGuard(replay_capacity)
+        self._delivery_cache = OrderedDict()
         self._listener: Optional[socket.socket] = None
 
     @property
@@ -242,13 +246,31 @@ class AuthenticatedLocalIpServer:
                     max_payload_bytes=self.max_payload_bytes,
                     max_clock_skew_ms=self.max_clock_skew_ms,
                 )
-                duplicate = not self.replay_guard.accept(envelope.message_id)
-                if duplicate:
-                    accepted = True
-                    detail = "duplicate delivery suppressed"
+                fingerprint = hashlib.sha256(
+                    _canonical_bytes(_envelope_to_dict(envelope))
+                ).hexdigest()
+                cached = self._delivery_cache.get(envelope.message_id)
+                if cached is not None:
+                    cached_fingerprint, accepted, detail = cached
+                    self._delivery_cache.move_to_end(envelope.message_id)
+                    if cached_fingerprint != fingerprint:
+                        accepted = False
+                        detail = "message_id reused with different content"
                 else:
                     accepted = bool(self.receiver(envelope))
-                    detail = "accepted by local receiver" if accepted else "rejected by local receiver"
+                    detail = (
+                        "accepted by local receiver"
+                        if accepted
+                        else "rejected by local receiver"
+                    )
+                    self._delivery_cache[envelope.message_id] = (
+                        fingerprint,
+                        accepted,
+                        detail,
+                    )
+                    self._delivery_cache.move_to_end(envelope.message_id)
+                    while len(self._delivery_cache) > self.replay_capacity:
+                        self._delivery_cache.popitem(last=False)
                 ack = _ack_frame(
                     message_id=envelope.message_id,
                     request_nonce=nonce,
