@@ -26,6 +26,12 @@ from .local_ip import (
     LocalIpTransportError,
     load_secret_file,
 )
+from .local_ip_rpc import (
+    AuthenticatedLocalIpRequestAdapter,
+    AuthenticatedLocalIpRequestServer,
+    LocalIpReceiverReply,
+    LocalIpRequestReport,
+)
 from .queueing import StoreAndForwardQueue
 from .replay import ReplayGuard
 from .routing import NoEligibleTransport, TransportSelector
@@ -47,6 +53,8 @@ from .wake import (
 
 __all__ = [
     "AuthenticatedLocalIpAdapter",
+    "AuthenticatedLocalIpRequestAdapter",
+    "AuthenticatedLocalIpRequestServer",
     "AuthenticatedLocalIpServer",
     "BEACON_OF_HOPE_NAME",
     "DeliveryPlan",
@@ -56,6 +64,8 @@ __all__ = [
     "EmergencyFallbackPolicy",
     "InvalidEmergencyBeacon",
     "LocalIpPeer",
+    "LocalIpReceiverReply",
+    "LocalIpRequestReport",
     "LocalIpTransportError",
     "MAX_PUBLIC_EMERGENCY_HOPS",
     "MAX_PUBLIC_EMERGENCY_PAYLOAD_BYTES",
