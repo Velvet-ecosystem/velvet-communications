@@ -1,8 +1,5 @@
-import os
-import socket
 import threading
 import time
-from pathlib import Path
 
 import pytest
 
@@ -83,7 +80,7 @@ def test_authenticated_loopback_delivery_and_ack():
     assert report.authority == "none"
 
 
-def test_duplicate_message_is_acknowledged_but_not_redelivered():
+def test_duplicate_message_reuses_original_accepted_outcome_without_redelivery():
     received = []
     server = start_server(lambda item: received.append(item) or True)
     thread = threading.Thread(target=serve_count, args=(server, 2), daemon=True)
@@ -99,7 +96,47 @@ def test_duplicate_message_is_acknowledged_but_not_redelivered():
     assert first.accepted is True
     assert second.accepted is True
     assert second.acknowledged is True
-    assert "duplicate" in second.detail
+    assert second.detail == first.detail
+    assert len(received) == 1
+
+
+def test_duplicate_message_reuses_original_rejection():
+    received = []
+    server = start_server(lambda item: received.append(item) or False)
+    thread = threading.Thread(target=serve_count, args=(server, 2), daemon=True)
+    thread.start()
+    try:
+        adapter = adapter_for(server)
+        first = adapter.send(envelope("reject-1"))
+        second = adapter.send(envelope("reject-1"))
+    finally:
+        thread.join(timeout=2.0)
+        server.close()
+
+    assert first.accepted is False
+    assert second.accepted is False
+    assert second.acknowledged is True
+    assert second.detail == "rejected by local receiver"
+    assert len(received) == 1
+
+
+def test_message_id_reuse_with_different_content_is_rejected():
+    received = []
+    server = start_server(lambda item: received.append(item) or True)
+    thread = threading.Thread(target=serve_count, args=(server, 2), daemon=True)
+    thread.start()
+    try:
+        adapter = adapter_for(server)
+        first = adapter.send(envelope("same-id", b"first"))
+        second = adapter.send(envelope("same-id", b"different"))
+    finally:
+        thread.join(timeout=2.0)
+        server.close()
+
+    assert first.accepted is True
+    assert second.accepted is False
+    assert second.acknowledged is True
+    assert "different content" in second.detail
     assert len(received) == 1
 
 
