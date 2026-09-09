@@ -78,7 +78,7 @@ Discovery is not trust. A heard radio node, visible LAN service, mesh participan
 
 ## Current foundation
 
-The first implementation slice is intentionally transport-neutral. It provides:
+The implemented foundation includes transport-neutral contracts and a concrete authenticated local-IP path:
 
 - `V2VEnvelope`: bounded cross-node delivery metadata plus an opaque payload
 - `TransportOffer`: one carrier's current capabilities and limits
@@ -86,8 +86,12 @@ The first implementation slice is intentionally transport-neutral. It provides:
 - `ReplayGuard`: bounded duplicate suppression at the communications boundary
 - `StoreAndForwardQueue`: bounded expiring delivery when no suitable path exists
 - `TransportAdapter`: protocol contract for concrete carrier adapters
+- `AuthenticatedLocalIpAdapter` / `AuthenticatedLocalIpServer`: bounded peer-authenticated TCP delivery, integrity checks, replay suppression and acknowledgements
+- `AuthenticatedLocalIpRequestAdapter` / `AuthenticatedLocalIpRequestServer`: bounded request/reply carriage for existing headless-node RPC protocols
 
-There is deliberately no radio driver or network daemon in the foundation. Hardware adapters arrive only after the physical carrier is selected and tested.
+The local-IP implementation is in [`local_ip.py`](src/velvet_communications/local_ip.py) and [`local_ip_rpc.py`](src/velvet_communications/local_ip_rpc.py). It authenticates frames with deployment-local peer secrets; it does not encrypt payloads. `protected_path` is advertised only when configuration explicitly declares a reviewed confidential underlay. See [Local IP Security Notes](docs/LOCAL_IP_SECURITY_NOTES.md).
+
+Concrete radio drivers and physical carrier acceptance remain separate work. A working software adapter does not establish accepted LAN hardware, body membership or Runtime/Court authority.
 
 ## Intended transport families
 
@@ -144,7 +148,7 @@ Likewise, a vehicle, cyberdeck, mobile companion, SBC, reused laptop, or future 
 
 Public alpha communications foundation. The transport-neutral contracts, degraded-link policy, privacy boundaries, emergency fallback semantics, and V2V authority separation are implemented and testable.
 
-Concrete radio/network adapters and physical carrier validation remain future work. This repository does not claim a production radio daemon, universal carrier support, or physical-control authority.
+Authenticated local-IP delivery and bounded RPC are implemented and covered by software tests. Concrete radio adapters and physical carrier validation remain future work. This repository does not claim a production radio daemon, universal carrier support, or physical-control authority.
 
 See [`docs/PUBLIC_RELEASE_READINESS.md`](docs/PUBLIC_RELEASE_READINESS.md) for the release boundary and public-release verification record.
 
